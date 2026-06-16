@@ -2,17 +2,11 @@ import { motion } from 'framer-motion'
 import { ArrowRight, Calendar } from 'lucide-react'
 import SectionHeading from '../ui/SectionHeading'
 import AnimatedSection from '../animation/AnimatedSection'
-
-const posts = [
-  { id: 1, title: 'Geek Bar Pulse 15000 Review: The Ultimate Disposable?', excerpt: 'Our comprehensive review of the most powerful disposable vape on the market...', category: 'Reviews', date: 'Mar 15, 2026', featured: true },
-  { id: 2, title: 'The Complete Guide To Nicotine Salts', excerpt: 'Everything you need to know about nicotine salts vs freebase...', category: 'Guides', date: 'Mar 12, 2026', featured: false },
-  { id: 3, title: 'Best Vape Kits For Beginners In 2026', excerpt: 'Starting your vaping journey? Here are our top picks...', category: 'Guides', date: 'Mar 10, 2026', featured: false },
-  { id: 4, title: 'UK Vape Regulations: What You Need To Know', excerpt: 'Stay compliant with the latest UK vaping laws and TPD regulations...', category: 'Info', date: 'Mar 8, 2026', featured: false },
-]
+import { blogPosts } from '../../data/categories'
 
 export default function VapeKnowledgeHub() {
-  const featured = posts.find((p) => p.featured)
-  const secondary = posts.filter((p) => !p.featured)
+  const featured = blogPosts.find((p) => p.featured)
+  const secondary = blogPosts.filter((p) => !p.featured)
 
   return (
     <section className="relative py-16 md:py-24 lg:py-32">
@@ -30,7 +24,13 @@ export default function VapeKnowledgeHub() {
               className="relative rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur-xl p-6 lg:p-8 h-full overflow-hidden group cursor-pointer"
             >
               <div className="relative h-48 lg:h-56 rounded-xl bg-gradient-to-br from-white/[0.03] to-white/[0.06] mb-6 overflow-hidden">
-                <div className="absolute inset-0 flex items-center justify-center">
+                <img
+                  src={featured.image}
+                  alt={featured.title}
+                  className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500"
+                  onError={(e) => { e.target.style.display = 'none' }}
+                />
+                <div className="absolute inset-0 flex items-center justify-center" style={{ display: 'none' }}>
                   <span className="text-4xl">📖</span>
                 </div>
               </div>
@@ -59,8 +59,13 @@ export default function VapeKnowledgeHub() {
                   className="rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur-xl p-6 group cursor-pointer"
                 >
                   <div className="flex gap-4">
-                    <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-white/[0.03] to-white/[0.06] flex-shrink-0 flex items-center justify-center">
-                      <span className="text-2xl">📝</span>
+                    <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-white/[0.03] to-white/[0.06] flex-shrink-0 overflow-hidden">
+                      <img
+                        src={post.image}
+                        alt={post.title}
+                        className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500"
+                        onError={(e) => { e.target.style.display = 'none' }}
+                      />
                     </div>
                     <div className="flex-1 min-w-0">
                       <span className="text-[10px] font-semibold tracking-wider text-neon-blue uppercase">{post.category}</span>

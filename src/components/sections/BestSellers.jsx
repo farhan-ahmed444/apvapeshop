@@ -3,15 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Star, Heart, ShoppingCart, Eye, X } from 'lucide-react'
 import SectionHeading from '../ui/SectionHeading'
 import GlassCard from '../ui/GlassCard'
-
-const products = [
-  { id: 1, name: 'Geek Bar Pulse 15000', category: 'Disposable Vapes', price: 19.99, rating: 4.9, reviews: 1247, badge: 'Best Seller' },
-  { id: 2, name: 'Lost Mary MO20000', category: 'Disposable Vapes', price: 22.99, rating: 4.8, reviews: 892, badge: 'New' },
-  { id: 3, name: 'Uwell Caliburn G3', category: 'Vape Kits', price: 34.99, rating: 4.7, reviews: 654, badge: 'Top Rated' },
-  { id: 4, name: 'Naked 100 Lava Flow', category: 'E-Liquids', price: 16.99, rating: 4.6, reviews: 2103, badge: 'Popular' },
-  { id: 5, name: 'Air Bar Max 8000', category: 'Disposable Vapes', price: 17.99, rating: 4.8, reviews: 1567, badge: 'Best Seller' },
-  { id: 6, name: 'Zyn Citrus 6mg', category: 'Nicotine Pouches', price: 9.99, rating: 4.5, reviews: 432, badge: 'Popular' },
-]
+import { products } from '../../data/categories'
 
 function QuickViewModal({ product, onClose }) {
   return (
@@ -31,6 +23,12 @@ function QuickViewModal({ product, onClose }) {
             onClick={(e) => e.stopPropagation()}
             className="w-full max-w-lg rounded-2xl border border-white/[0.06] bg-dark-900/95 backdrop-blur-2xl p-8"
           >
+            <img
+              src={product.image}
+              alt={product.name}
+              className="w-full aspect-[4/3] object-cover rounded-xl mb-6"
+              onError={(e) => { e.target.style.display = 'none' }}
+            />
             <div className="flex justify-between items-start mb-6">
               <div>
                 <span className="text-xs font-semibold tracking-wider text-neon-blue uppercase">{product.category}</span>
@@ -90,7 +88,16 @@ export default function BestSellers() {
             >
               <GlassCard className="p-6">
                 <div className="relative aspect-[4/3] rounded-xl bg-gradient-to-br from-white/[0.03] to-white/[0.06] mb-4 overflow-hidden">
-                  <div className="absolute inset-0 flex items-center justify-center">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    onError={(e) => {
+                      e.target.style.display = 'none'
+                      e.target.nextElementSibling.style.display = 'flex'
+                    }}
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center" style={{ display: 'none' }}>
                     <div className="w-16 h-16 rounded-full bg-gradient-to-br from-neon-blue/10 to-electric-purple/10 flex items-center justify-center">
                       <span className="text-2xl">💨</span>
                     </div>

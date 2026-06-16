@@ -1,14 +1,6 @@
 import { motion } from 'framer-motion'
 import SectionHeading from '../ui/SectionHeading'
-
-const brands = [
-  { id: 1, name: 'Geek Bar' },
-  { id: 2, name: 'Air Bar' },
-  { id: 3, name: 'Uwell' },
-  { id: 4, name: 'Naked 100' },
-  { id: 5, name: 'Zyn' },
-  { id: 6, name: 'Ripe Vapes' },
-]
+import { brands } from '../../data/categories'
 
 export default function BrandShowcase() {
   return (
@@ -32,6 +24,12 @@ export default function BrandShowcase() {
             >
               <div className="rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur-xl p-6 lg:p-8 flex items-center justify-center h-28 lg:h-32 overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-white/[0.04] group-hover:from-neon-blue/[0.03] group-hover:to-electric-purple/[0.03] transition-colors duration-500" />
+                <img
+                  src={brand.image}
+                  alt={brand.name}
+                  className="relative z-10 max-w-full max-h-full object-contain filter grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
+                  onError={(e) => { e.target.style.display = 'none' }}
+                />
                 <span className="relative z-10 text-lg lg:text-xl font-bold text-white/40 group-hover:text-white group-hover:text-gradient transition-all duration-500">
                   {brand.name}
                 </span>

@@ -10,9 +10,13 @@ export default function ParticleEffect({ count = 30, color = '#00E5FF', speed = 
     let animationId
     let particles = []
 
+    const getSize = () => ({
+      w: canvas.clientWidth || window.innerWidth,
+      h: canvas.clientHeight || window.innerHeight,
+    })
+
     const init = () => {
-      const w = canvas.clientWidth
-      const h = canvas.clientHeight
+      const { w, h } = getSize()
       if (w === 0 || h === 0) {
         requestAnimationFrame(init)
         return
@@ -32,18 +36,20 @@ export default function ParticleEffect({ count = 30, color = '#00E5FF', speed = 
     const ro = new ResizeObserver(() => init())
     init()
     ro.observe(canvas.parentElement)
+    window.addEventListener('resize', init)
 
     const animate = () => {
-      if (canvas.width === 0 || canvas.height === 0) {
-        animationId = requestAnimationFrame(animate)
-        return
+      const { w, h } = getSize()
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w
+        canvas.height = h
       }
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      ctx.clearRect(0, 0, w, h)
       for (const p of particles) {
         p.x += p.vx
         p.y += p.vy
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1
+        if (p.x < 0 || p.x > w) p.vx *= -1
+        if (p.y < 0 || p.y > h) p.vy *= -1
         ctx.beginPath()
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
         ctx.fillStyle = color
@@ -57,13 +63,15 @@ export default function ParticleEffect({ count = 30, color = '#00E5FF', speed = 
     return () => {
       cancelAnimationFrame(animationId)
       ro.disconnect()
+      window.removeEventListener('resize', init)
     }
   }, [count, color, speed])
 
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none absolute inset-0 z-0"
+      className="pointer-events-none absolute inset-0 z-0 w-full h-full"
+      style={{ width: '100%', height: '100%' }}
     />
   )
 }

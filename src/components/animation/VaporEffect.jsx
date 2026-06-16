@@ -10,9 +10,13 @@ export default function VaporEffect() {
     let animationId
     let particles = []
 
+    const getSize = () => ({
+      w: canvas.clientWidth || window.innerWidth,
+      h: canvas.clientHeight || window.innerHeight,
+    })
+
     const init = () => {
-      const w = canvas.clientWidth
-      const h = canvas.clientHeight
+      const { w, h } = getSize()
       if (w === 0 || h === 0) {
         requestAnimationFrame(init)
         return
@@ -32,20 +36,22 @@ export default function VaporEffect() {
     const ro = new ResizeObserver(() => init())
     init()
     ro.observe(canvas.parentElement)
+    window.addEventListener('resize', init)
 
     const animate = () => {
-      if (canvas.width === 0 || canvas.height === 0) {
-        animationId = requestAnimationFrame(animate)
-        return
+      const { w, h } = getSize()
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w
+        canvas.height = h
       }
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      ctx.clearRect(0, 0, w, h)
       for (const p of particles) {
         p.y -= p.speedY
         p.x += p.speedX
         p.opacity -= 0.001
         if (p.y < -p.size || p.opacity <= 0) {
-          p.y = canvas.height + 20
-          p.x = Math.random() * canvas.width
+          p.y = h + 20
+          p.x = Math.random() * w
           p.opacity = Math.random() * 0.15 + 0.05
         }
         const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size)
@@ -62,13 +68,15 @@ export default function VaporEffect() {
     return () => {
       cancelAnimationFrame(animationId)
       ro.disconnect()
+      window.removeEventListener('resize', init)
     }
   }, [])
 
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none absolute inset-0 z-0"
+      className="pointer-events-none absolute inset-0 z-0 w-full h-full"
+      style={{ width: '100%', height: '100%' }}
     />
   )
 }

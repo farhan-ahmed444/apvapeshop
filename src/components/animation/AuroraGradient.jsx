@@ -11,9 +11,12 @@ export default function AuroraGradient() {
     let blobs = []
 
     const init = () => {
-      const w = canvas.offsetWidth
-      const h = canvas.offsetHeight
-      if (w === 0 || h === 0) return
+      const w = canvas.clientWidth
+      const h = canvas.clientHeight
+      if (w === 0 || h === 0) {
+        requestAnimationFrame(init)
+        return
+      }
       canvas.width = w
       canvas.height = h
       blobs = Array.from({ length: 3 }, () => ({
@@ -25,8 +28,8 @@ export default function AuroraGradient() {
       }))
     }
 
+    const ro = new ResizeObserver(() => init())
     init()
-    const ro = new ResizeObserver(init)
     ro.observe(canvas.parentElement)
 
     const colors = [
@@ -41,17 +44,17 @@ export default function AuroraGradient() {
         return
       }
       ctx.clearRect(0, 0, canvas.width, canvas.height)
-      blobs.forEach((blob, i) => {
+      for (const blob of blobs) {
         blob.x += blob.vx
         blob.y += blob.vy
         if (blob.x < -blob.radius || blob.x > canvas.width + blob.radius) blob.vx *= -1
         if (blob.y < -blob.radius || blob.y > canvas.height + blob.radius) blob.vy *= -1
         const gradient = ctx.createRadialGradient(blob.x, blob.y, 0, blob.x, blob.y, blob.radius)
-        gradient.addColorStop(0, colors[i])
+        gradient.addColorStop(0, colors[blobs.indexOf(blob)])
         gradient.addColorStop(1, 'transparent')
         ctx.fillStyle = gradient
         ctx.fillRect(blob.x - blob.radius, blob.y - blob.radius, blob.radius * 2, blob.radius * 2)
-      })
+      }
       animationId = requestAnimationFrame(animate)
     }
     animate()

@@ -11,9 +11,12 @@ export default function VaporEffect() {
     let particles = []
 
     const init = () => {
-      const w = canvas.offsetWidth
-      const h = canvas.offsetHeight
-      if (w === 0 || h === 0) return
+      const w = canvas.clientWidth
+      const h = canvas.clientHeight
+      if (w === 0 || h === 0) {
+        requestAnimationFrame(init)
+        return
+      }
       canvas.width = w
       canvas.height = h
       particles = Array.from({ length: 15 }, () => ({
@@ -26,8 +29,8 @@ export default function VaporEffect() {
       }))
     }
 
+    const ro = new ResizeObserver(() => init())
     init()
-    const ro = new ResizeObserver(init)
     ro.observe(canvas.parentElement)
 
     const animate = () => {
@@ -36,7 +39,7 @@ export default function VaporEffect() {
         return
       }
       ctx.clearRect(0, 0, canvas.width, canvas.height)
-      particles.forEach((p) => {
+      for (const p of particles) {
         p.y -= p.speedY
         p.x += p.speedX
         p.opacity -= 0.001
@@ -51,7 +54,7 @@ export default function VaporEffect() {
         gradient.addColorStop(1, 'rgba(0, 229, 255, 0)')
         ctx.fillStyle = gradient
         ctx.fillRect(p.x - p.size, p.y - p.size, p.size * 2, p.size * 2)
-      })
+      }
       animationId = requestAnimationFrame(animate)
     }
     animate()

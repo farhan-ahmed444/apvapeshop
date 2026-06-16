@@ -11,9 +11,12 @@ export default function ParticleEffect({ count = 30, color = '#00E5FF', speed = 
     let particles = []
 
     const init = () => {
-      const w = canvas.offsetWidth
-      const h = canvas.offsetHeight
-      if (w === 0 || h === 0) return
+      const w = canvas.clientWidth
+      const h = canvas.clientHeight
+      if (w === 0 || h === 0) {
+        requestAnimationFrame(init)
+        return
+      }
       canvas.width = w
       canvas.height = h
       particles = Array.from({ length: count }, () => ({
@@ -26,8 +29,8 @@ export default function ParticleEffect({ count = 30, color = '#00E5FF', speed = 
       }))
     }
 
+    const ro = new ResizeObserver(() => init())
     init()
-    const ro = new ResizeObserver(init)
     ro.observe(canvas.parentElement)
 
     const animate = () => {
@@ -36,7 +39,7 @@ export default function ParticleEffect({ count = 30, color = '#00E5FF', speed = 
         return
       }
       ctx.clearRect(0, 0, canvas.width, canvas.height)
-      particles.forEach((p) => {
+      for (const p of particles) {
         p.x += p.vx
         p.y += p.vy
         if (p.x < 0 || p.x > canvas.width) p.vx *= -1
@@ -46,7 +49,7 @@ export default function ParticleEffect({ count = 30, color = '#00E5FF', speed = 
         ctx.fillStyle = color
         ctx.globalAlpha = p.opacity
         ctx.fill()
-      })
+      }
       animationId = requestAnimationFrame(animate)
     }
     animate()

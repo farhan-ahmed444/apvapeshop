@@ -1,0 +1,45 @@
+import { motion } from 'framer-motion'
+import SectionHeading from '../ui/SectionHeading'
+
+const brands = [
+  { id: 1, name: 'Geek Bar' },
+  { id: 2, name: 'Air Bar' },
+  { id: 3, name: 'Uwell' },
+  { id: 4, name: 'Naked 100' },
+  { id: 5, name: 'Zyn' },
+  { id: 6, name: 'Ripe Vapes' },
+]
+
+export default function BrandShowcase() {
+  return (
+    <section className="relative py-24 lg:py-32">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionHeading
+          title="Premium Brands We Carry"
+          description="Partnered with the world's leading vape manufacturers"
+        />
+
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 lg:gap-6">
+          {brands.map((brand, index) => (
+            <motion.div
+              key={brand.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.08, duration: 0.5 }}
+              whileHover={{ scale: 1.05, y: -4 }}
+              className="relative group"
+            >
+              <div className="rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur-xl p-6 lg:p-8 flex items-center justify-center h-28 lg:h-32 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-white/[0.04] group-hover:from-neon-blue/[0.03] group-hover:to-electric-purple/[0.03] transition-colors duration-500" />
+                <span className="relative z-10 text-lg lg:text-xl font-bold text-white/40 group-hover:text-white group-hover:text-gradient transition-all duration-500">
+                  {brand.name}
+                </span>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}

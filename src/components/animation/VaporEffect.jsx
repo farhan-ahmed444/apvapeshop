@@ -8,24 +8,33 @@ export default function VaporEffect() {
     if (!canvas) return
     const ctx = canvas.getContext('2d')
     let animationId
+    let particles = []
 
-    const resize = () => {
-      canvas.width = canvas.offsetWidth
-      canvas.height = canvas.offsetHeight
+    const init = () => {
+      const w = canvas.offsetWidth
+      const h = canvas.offsetHeight
+      if (w === 0 || h === 0) return
+      canvas.width = w
+      canvas.height = h
+      particles = Array.from({ length: 15 }, () => ({
+        x: Math.random() * w,
+        y: h + 20,
+        size: Math.random() * 80 + 40,
+        speedY: Math.random() * 0.3 + 0.1,
+        speedX: (Math.random() - 0.5) * 0.2,
+        opacity: Math.random() * 0.15 + 0.05,
+      }))
     }
-    resize()
-    window.addEventListener('resize', resize)
 
-    const particles = Array.from({ length: 15 }, () => ({
-      x: Math.random() * canvas.width,
-      y: canvas.height + 20,
-      size: Math.random() * 80 + 40,
-      speedY: Math.random() * 0.3 + 0.1,
-      speedX: (Math.random() - 0.5) * 0.2,
-      opacity: Math.random() * 0.15 + 0.05,
-    }))
+    init()
+    const ro = new ResizeObserver(init)
+    ro.observe(canvas.parentElement)
 
     const animate = () => {
+      if (canvas.width === 0 || canvas.height === 0) {
+        animationId = requestAnimationFrame(animate)
+        return
+      }
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       particles.forEach((p) => {
         p.y -= p.speedY
@@ -49,7 +58,7 @@ export default function VaporEffect() {
 
     return () => {
       cancelAnimationFrame(animationId)
-      window.removeEventListener('resize', resize)
+      ro.disconnect()
     }
   }, [])
 

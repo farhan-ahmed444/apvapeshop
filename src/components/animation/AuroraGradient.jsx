@@ -8,21 +8,26 @@ export default function AuroraGradient() {
     if (!canvas) return
     const ctx = canvas.getContext('2d')
     let animationId
+    let blobs = []
 
-    const resize = () => {
-      canvas.width = canvas.offsetWidth
-      canvas.height = canvas.offsetHeight
+    const init = () => {
+      const w = canvas.offsetWidth
+      const h = canvas.offsetHeight
+      if (w === 0 || h === 0) return
+      canvas.width = w
+      canvas.height = h
+      blobs = Array.from({ length: 3 }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+        radius: Math.random() * 300 + 200,
+      }))
     }
-    resize()
-    window.addEventListener('resize', resize)
 
-    const blobs = Array.from({ length: 3 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 0.5,
-      vy: (Math.random() - 0.5) * 0.5,
-      radius: Math.random() * 300 + 200,
-    }))
+    init()
+    const ro = new ResizeObserver(init)
+    ro.observe(canvas.parentElement)
 
     const colors = [
       'rgba(0, 229, 255, 0.15)',
@@ -31,13 +36,16 @@ export default function AuroraGradient() {
     ]
 
     const animate = () => {
+      if (canvas.width === 0 || canvas.height === 0) {
+        animationId = requestAnimationFrame(animate)
+        return
+      }
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       blobs.forEach((blob, i) => {
         blob.x += blob.vx
         blob.y += blob.vy
         if (blob.x < -blob.radius || blob.x > canvas.width + blob.radius) blob.vx *= -1
         if (blob.y < -blob.radius || blob.y > canvas.height + blob.radius) blob.vy *= -1
-
         const gradient = ctx.createRadialGradient(blob.x, blob.y, 0, blob.x, blob.y, blob.radius)
         gradient.addColorStop(0, colors[i])
         gradient.addColorStop(1, 'transparent')
@@ -50,7 +58,7 @@ export default function AuroraGradient() {
 
     return () => {
       cancelAnimationFrame(animationId)
-      window.removeEventListener('resize', resize)
+      ro.disconnect()
     }
   }, [])
 

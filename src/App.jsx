@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Lenis from 'lenis'
-import { AnimatePresence } from 'framer-motion'
 import { useSite } from './context/SiteContext'
 import Navigation from './components/layout/Navigation'
 import Footer from './components/layout/Footer'
@@ -15,30 +14,33 @@ export default function App() {
   const rafRef = useRef(null)
 
   useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 1.5,
-    })
+    let lenis
+    try {
+      lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        touchMultiplier: 1.5,
+      })
+      lenisRef.current = lenis
 
-    lenisRef.current = lenis
+      lenis.on('scroll', (e) => {
+        setScrollY(e.animatedScroll || e.scroll || 0)
+      })
 
-    lenis.on('scroll', (e) => {
-      setScrollY(e.animatedScroll || e.scroll || 0)
-    })
-
-    function raf(time) {
-      lenis.raf(time)
+      function raf(time) {
+        lenis.raf(time)
+        rafRef.current = requestAnimationFrame(raf)
+      }
       rafRef.current = requestAnimationFrame(raf)
+    } catch (e) {
+      console.error('Lenis init failed:', e)
     }
-    rafRef.current = requestAnimationFrame(raf)
 
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
-      lenis.destroy()
+      if (lenis) lenis.destroy()
     }
   }, [])
 
@@ -49,23 +51,19 @@ export default function App() {
   }, [location.pathname])
 
   return (
-    <>
+    <div className="relative min-h-screen bg-dark-950">
       {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
 
-      <div className="relative min-h-screen bg-dark-950">
-        <CursorFollower />
-        <Navigation />
+      <CursorFollower />
+      <Navigation />
 
-        <main>
-          <AnimatePresence mode="wait">
-            <Routes location={location} key={location.pathname}>
-              <Route path="/" element={<Home />} />
-            </Routes>
-          </AnimatePresence>
-        </main>
+      <main>
+        <Routes location={location}>
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </main>
 
-        <Footer />
-      </div>
-    </>
+      <Footer />
+    </div>
   )
 }

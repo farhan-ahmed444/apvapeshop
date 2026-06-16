@@ -8,24 +8,33 @@ export default function ParticleEffect({ count = 30, color = '#00E5FF', speed = 
     if (!canvas) return
     const ctx = canvas.getContext('2d')
     let animationId
+    let particles = []
 
-    const resize = () => {
-      canvas.width = canvas.offsetWidth
-      canvas.height = canvas.offsetHeight
+    const init = () => {
+      const w = canvas.offsetWidth
+      const h = canvas.offsetHeight
+      if (w === 0 || h === 0) return
+      canvas.width = w
+      canvas.height = h
+      particles = Array.from({ length: count }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * speed,
+        vy: (Math.random() - 0.5) * speed,
+        size: Math.random() * 3 + 1,
+        opacity: Math.random() * 0.5 + 0.2,
+      }))
     }
-    resize()
-    window.addEventListener('resize', resize)
 
-    const particles = Array.from({ length: count }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * speed,
-      vy: (Math.random() - 0.5) * speed,
-      size: Math.random() * 3 + 1,
-      opacity: Math.random() * 0.5 + 0.2,
-    }))
+    init()
+    const ro = new ResizeObserver(init)
+    ro.observe(canvas.parentElement)
 
     const animate = () => {
+      if (canvas.width === 0 || canvas.height === 0) {
+        animationId = requestAnimationFrame(animate)
+        return
+      }
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       particles.forEach((p) => {
         p.x += p.vx
@@ -44,7 +53,7 @@ export default function ParticleEffect({ count = 30, color = '#00E5FF', speed = 
 
     return () => {
       cancelAnimationFrame(animationId)
-      window.removeEventListener('resize', resize)
+      ro.disconnect()
     }
   }, [count, color, speed])
 

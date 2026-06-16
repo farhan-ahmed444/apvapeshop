@@ -10,10 +10,6 @@ export default function LoadingScreen({ onComplete }) {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval)
-          setTimeout(() => {
-            setShow(false)
-            onComplete?.()
-          }, 500)
           return 100
         }
         return prev + Math.random() * 8 + 2
@@ -21,14 +17,25 @@ export default function LoadingScreen({ onComplete }) {
     }, 100)
 
     return () => clearInterval(interval)
-  }, [onComplete])
+  }, [])
+
+  useEffect(() => {
+    if (progress >= 100) {
+      const timer = setTimeout(() => {
+        setShow(false)
+        setTimeout(() => onComplete?.(), 600)
+      }, 400)
+      return () => clearTimeout(timer)
+    }
+  }, [progress, onComplete])
 
   return (
     <AnimatePresence>
       {show && (
         <motion.div
+          key="loader"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0, transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] } }}
+          exit={{ opacity: 0, transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] } }}
           className="fixed inset-0 z-[9999] bg-dark-950 flex flex-col items-center justify-center"
         >
           <div className="relative mb-8">
@@ -43,13 +50,7 @@ export default function LoadingScreen({ onComplete }) {
             />
           </div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-white/60 text-sm mb-8"
-          >
-            Loading experience
-          </motion.p>
+          <p className="text-white/60 text-sm mb-8">Loading experience</p>
 
           <div className="w-48 h-[2px] bg-white/10 rounded-full overflow-hidden">
             <motion.div
@@ -58,13 +59,9 @@ export default function LoadingScreen({ onComplete }) {
             />
           </div>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-white/40 text-xs mt-3 font-mono"
-          >
+          <p className="text-white/40 text-xs mt-3 font-mono">
             {Math.min(Math.floor(progress), 100)}%
-          </motion.p>
+          </p>
         </motion.div>
       )}
     </AnimatePresence>

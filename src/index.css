@@ -13,14 +13,9 @@
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 html {
   scroll-behavior: auto;
+  background-color: #050505;
 }
 
 html.lenis {
@@ -36,10 +31,18 @@ html.lenis {
 }
 
 body {
+  margin: 0;
   background-color: #050505;
   color: #ffffff;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+  background-color: #050505;
 }
 
 ::-webkit-scrollbar {
@@ -64,21 +67,6 @@ body {
   color: #fff;
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-}
-
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(0, 229, 255, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(0, 229, 255, 0.6); }
-}
-
-@keyframes aurora {
-  0% { transform: translate(-50%, -50%) rotate(0deg); }
-  100% { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
 .glass {
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(20px);
@@ -91,12 +79,8 @@ body {
   border-color: rgba(0, 229, 255, 0.2);
 }
 
-.neon-glow {
-  box-shadow: 0 0 20px rgba(0, 229, 255, 0.3),
-              0 0 40px rgba(0, 229, 255, 0.1);
-}
-
 .text-gradient {
+  color: #00E5FF;
   background: linear-gradient(135deg, #00E5FF, #7B2EFF);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -104,12 +88,9 @@ body {
 }
 
 .text-gradient-green {
+  color: #00FF88;
   background: linear-gradient(135deg, #00FF88, #00E5FF);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-}
-
-.border-gradient {
-  border-image: linear-gradient(135deg, #00E5FF, #7B2EFF) 1;
 }

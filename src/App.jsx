@@ -24,20 +24,17 @@ export default function App() {
         touchMultiplier: 1.5,
       })
       lenisRef.current = lenis
-
       lenis.on('scroll', (e) => {
         setScrollY(e.animatedScroll || e.scroll || 0)
       })
-
       function raf(time) {
         lenis.raf(time)
         rafRef.current = requestAnimationFrame(raf)
       }
       rafRef.current = requestAnimationFrame(raf)
     } catch (e) {
-      console.error('Lenis init failed:', e)
+      console.error('Lenis failed:', e)
     }
-
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
       if (lenis) lenis.destroy()
@@ -51,19 +48,21 @@ export default function App() {
   }, [location.pathname])
 
   return (
-    <div className="relative min-h-screen bg-dark-950">
+    <>
       {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
 
-      <CursorFollower />
-      <Navigation />
+      <div className="relative min-h-screen bg-dark-950">
+        <CursorFollower />
+        <Navigation />
 
-      <main>
-        <Routes location={location}>
-          <Route path="/" element={<Home />} />
-        </Routes>
-      </main>
+        <main>
+          <Routes location={location}>
+            <Route path="/" element={<Home />} />
+          </Routes>
+        </main>
 
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </>
   )
 }

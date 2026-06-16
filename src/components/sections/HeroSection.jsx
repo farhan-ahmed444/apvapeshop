@@ -4,9 +4,11 @@ import { ChevronDown, ArrowRight, Sparkles } from 'lucide-react'
 import Button from '../ui/Button'
 import VaporEffect from '../animation/VaporEffect'
 import ParticleEffect from '../animation/ParticleEffect'
+import { useSite } from '../../context/SiteContext'
 
 export default function HeroSection() {
   const containerRef = useRef(null)
+  const { lenisRef } = useSite()
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -23,7 +25,9 @@ export default function HeroSection() {
   }, [])
 
   const scrollToContent = () => {
-    window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(window.innerHeight)
+    }
   }
 
   return (

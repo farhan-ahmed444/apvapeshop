@@ -30,7 +30,7 @@ export default function CustomerReviews() {
   }
 
   return (
-    <section className="relative py-24 lg:py-32 overflow-hidden">
+    <section className="relative py-16 md:py-24 lg:py-32 overflow-hidden">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-neon-blue/[0.02] rounded-full blur-[128px]" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -99,7 +99,7 @@ export default function CustomerReviews() {
                   key={i}
                   onClick={() => setCurrentIndex(i)}
                   className={`w-2 h-2 rounded-full transition-all ${
-                    i === currentIndex % reviews.length
+                    i === currentIndex
                       ? 'bg-neon-blue w-6'
                       : 'bg-white/20 hover:bg-white/40'
                   }`}

@@ -10,9 +10,9 @@ import CursorFollower from './components/ui/CursorFollower'
 import Home from './pages/Home'
 
 export default function App() {
-  const { isLoading, setIsLoading } = useSite()
+  const { isLoading, setIsLoading, setScrollY, lenisRef } = useSite()
   const location = useLocation()
-  const lenisRef = useRef(null)
+  const rafRef = useRef(null)
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -26,19 +26,26 @@ export default function App() {
 
     lenisRef.current = lenis
 
+    lenis.on('scroll', (e) => {
+      setScrollY(e.animatedScroll || e.scroll || 0)
+    })
+
     function raf(time) {
       lenis.raf(time)
-      requestAnimationFrame(raf)
+      rafRef.current = requestAnimationFrame(raf)
     }
-    requestAnimationFrame(raf)
+    rafRef.current = requestAnimationFrame(raf)
 
     return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
       lenis.destroy()
     }
   }, [])
 
   useEffect(() => {
-    window.scrollTo(0, 0)
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(0, { immediate: true })
+    }
   }, [location.pathname])
 
   return (

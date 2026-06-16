@@ -15,7 +15,7 @@ export default function VapeKnowledgeHub() {
   const secondary = posts.filter((p) => !p.featured)
 
   return (
-    <section className="relative py-24 lg:py-32">
+    <section className="relative py-16 md:py-24 lg:py-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           label="Knowledge Hub"

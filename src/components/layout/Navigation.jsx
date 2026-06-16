@@ -1,35 +1,31 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ShoppingCart, Heart, Search, ChevronDown } from 'lucide-react'
+import { Menu, X, ShoppingCart, Heart, Search } from 'lucide-react'
+import { useSite } from '../../context/SiteContext'
 
 const navLinks = [
   { label: 'Home', href: '/' },
-  { label: 'Shop', href: '/shop', hasDropdown: true },
-  { label: 'Categories', href: '/categories', hasDropdown: true },
+  { label: 'Shop', href: '/shop' },
+  { label: 'Categories', href: '/categories' },
   { label: 'Deals', href: '/deals', badge: 'Hot' },
   { label: 'Blog', href: '/blog' },
   { label: 'Contact', href: '/contact' },
 ]
 
 export default function Navigation() {
-  const [scrolled, setScrolled] = useState(false)
+  const { scrollY } = useSite()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [visible, setVisible] = useState(true)
-  const [lastScroll, setLastScroll] = useState(0)
+  const lastScroll = useRef(0)
+
+  const scrolled = scrollY > 50
 
   useEffect(() => {
-    let lastY = window.scrollY
-    const handleScroll = () => {
-      const currentY = window.scrollY
-      setScrolled(currentY > 50)
-      setVisible(currentY < lastY || currentY < 100)
-      setLastScroll(currentY)
-      lastY = currentY
-    }
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [lastScroll])
+    const current = scrollY
+    setVisible(current < lastScroll.current || current < 100)
+    lastScroll.current = current
+  }, [scrollY])
 
   return (
     <>

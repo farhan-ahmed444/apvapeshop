@@ -42,7 +42,7 @@ function CountdownTimer() {
 
 export default function DealOfTheDay() {
   return (
-    <section className="relative py-24 lg:py-32 overflow-hidden">
+    <section className="relative py-16 md:py-24 lg:py-32 overflow-hidden">
       <AuroraGradient />
       <div className="absolute inset-0 bg-gradient-to-r from-dark-950/80 via-dark-950/50 to-dark-950/80 z-10" />
 
@@ -60,7 +60,7 @@ export default function DealOfTheDay() {
             </span>
             <h2 className="text-4xl lg:text-5xl font-bold text-white leading-tight mb-4">
               Geek Bar Pulse<br />
-              <span className="text-gradient">£19.99</span>
+              <span className="text-gradient">$19.99</span>
             </h2>
             <p className="text-white/50 text-lg mb-6">
               15,000 puffs · 5% nicotine · Rechargeable · 20 delicious flavours

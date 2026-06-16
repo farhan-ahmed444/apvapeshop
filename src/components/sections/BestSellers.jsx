@@ -50,7 +50,7 @@ function QuickViewModal({ product, onClose }) {
             </div>
             <p className="text-white/60 mb-6">Premium quality {product.category.toLowerCase()} with exceptional flavour and performance.</p>
             <div className="flex items-center justify-between">
-              <p className="text-3xl font-bold text-white">£{product.price.toFixed(2)}</p>
+               <p className="text-3xl font-bold text-white">${product.price.toFixed(2)}</p>
               <button className="px-6 py-3 bg-neon-blue text-dark-950 font-medium rounded-full hover:bg-neon-blue/90 transition-colors">
                 Add To Cart
               </button>
@@ -71,7 +71,7 @@ export default function BestSellers() {
   }
 
   return (
-    <section className="relative py-24 lg:py-32">
+    <section className="relative py-16 md:py-24 lg:py-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           label="Best Sellers"
@@ -132,7 +132,7 @@ export default function BestSellers() {
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <p className="text-xl font-bold text-white">£{product.price.toFixed(2)}</p>
+                   <p className="text-xl font-bold text-white">${product.price.toFixed(2)}</p>
                   <button className="p-2.5 rounded-full bg-neon-blue/10 text-neon-blue hover:bg-neon-blue hover:text-dark-950 transition-all">
                     <ShoppingCart size={16} />
                   </button>

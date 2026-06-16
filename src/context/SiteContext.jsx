@@ -6,6 +6,7 @@ export function SiteProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [wishlist, setWishlist] = useState([])
+  const [scrollY, setScrollY] = useState(0)
   const lenisRef = useRef(null)
 
   useEffect(() => {
@@ -33,6 +34,8 @@ export function SiteProvider({ children }) {
         wishlist,
         toggleWishlist,
         lenisRef,
+        scrollY,
+        setScrollY,
       }}
     >
       {children}

@@ -5,7 +5,7 @@ import AnimatedSection from '../animation/AnimatedSection'
 
 const features = [
   { icon: Shield, title: 'Authentic Products', description: '100% genuine products sourced directly from authorised UK distributors.', color: 'from-cyan-500/20 to-blue-500/20' },
-  { icon: Truck, title: 'Fast Delivery', description: 'Next-day delivery on all orders placed before 3pm. Free shipping over £50.', color: 'from-purple-500/20 to-pink-500/20' },
+  { icon: Truck, title: 'Fast Delivery', description: 'Next-day delivery on all orders placed before 3pm. Free shipping over $50.', color: 'from-purple-500/20 to-pink-500/20' },
   { icon: Package, title: 'Huge Selection', description: 'Over 400 premium products from the world\'s leading vape brands.', color: 'from-green-500/20 to-emerald-500/20' },
   { icon: BadgePercent, title: 'Competitive Pricing', description: 'Best price guarantee. We match any legitimate UK competitor\'s price.', color: 'from-orange-500/20 to-red-500/20' },
   { icon: HeadphonesIcon, title: 'Customer Support', description: 'UK-based team ready to help. Live chat, email, and phone support.', color: 'from-blue-500/20 to-indigo-500/20' },
@@ -14,7 +14,7 @@ const features = [
 
 export default function WhyAPVapeShop() {
   return (
-    <section className="relative py-24 lg:py-32">
+    <section className="relative py-16 md:py-24 lg:py-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           label="Why Choose Us"

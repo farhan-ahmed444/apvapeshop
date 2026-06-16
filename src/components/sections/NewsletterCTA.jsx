@@ -4,7 +4,7 @@ import ParticleEffect from '../animation/ParticleEffect'
 
 export default function NewsletterCTA() {
   return (
-    <section className="relative py-24 lg:py-32 overflow-hidden">
+    <section className="relative py-16 md:py-24 lg:py-32 overflow-hidden">
       <div className="absolute inset-0">
         <ParticleEffect count={20} color="#00E5FF" speed={0.3} />
       </div>

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Mail, MapPin, Phone, ArrowUp } from 'lucide-react'
+import { useSite } from '../../context/SiteContext'
 
 const quickLinks = [
   { label: 'About Us', href: '/about' },
@@ -26,17 +27,20 @@ const support = [
   { label: 'Age Verification', href: '/age-verification' },
 ]
 
-const scrollToTop = () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' })
-}
-
 export default function Footer() {
+  const { lenisRef } = useSite()
+
+  const scrollToTop = () => {
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(0)
+    }
+  }
   return (
     <footer className="relative border-t border-white/[0.06] bg-dark-950">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/[0.01] to-white/[0.02] pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 lg:gap-12 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-12 mb-12">
           <div className="col-span-2 lg:col-span-2">
             <Link to="/" className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-neon-blue to-electric-purple flex items-center justify-center">

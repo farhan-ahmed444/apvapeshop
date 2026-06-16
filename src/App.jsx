@@ -5,7 +5,7 @@ import { useSite } from './context/SiteContext'
 import Navigation from './components/layout/Navigation'
 import Footer from './components/layout/Footer'
 import LoadingScreen from './components/layout/LoadingScreen'
-import CursorFollower from './components/ui/CursorFollower'
+
 import Home from './pages/Home'
 
 export default function App() {
@@ -52,7 +52,6 @@ export default function App() {
       {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
 
       <div className="relative min-h-screen bg-dark-950">
-        <CursorFollower />
         <Navigation />
 
         <main>
